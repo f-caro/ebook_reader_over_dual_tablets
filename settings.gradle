@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "Ebook Reader Over Dual Tablets"
