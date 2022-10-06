@@ -6,6 +6,9 @@ import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
@@ -15,6 +18,7 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
     PDFView pdfView;
+    Button simpleButton1, simpleButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +39,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        new Thread(new Runnable() {
-//            public void run(){
-//                if (pdffile.exists() && pdffile.canRead()) {
-//                    pdfView.fromFile(pdffile).load();
-//                }
-//            }
-//        }).start();
+        simpleButton1 = (Button) findViewById(R.id.buttonGotoPage100);//get id of button 1
 
-            //pdfView.fromAsset("STA4811.pdf");
-
-//        try {
-//            pdfView.fromStream( assetManager.open("STA4811.pdf") ) ;
-//            //pdfView.fromStream( (InputStream) getAssets().open("STA4811.pdf") );
-//        }
-//        catch(IOException ex){
-//            return;
-//        }
-
+        simpleButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pdfView.jumpTo(100);
+                Toast.makeText(getApplicationContext(),
+                        simpleButton1.getText() ,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
