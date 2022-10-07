@@ -12,8 +12,10 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ import com.github.barteksc.pdfviewer.PDFView;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     TextView view_data;
     StringBuilder messages;
 
+    ListView listViewBluetoothDevices;
+    TextView btDeviceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
             Object[] devices = pairedDevices.toArray();
             BluetoothDevice device = (BluetoothDevice) devices[0];
             ParcelUuid[] uuid = device.getUuids();
-            
+            ArrayList<String> tempListDevices = new ArrayList<>() ;
+
             for ( Object item : devices){
                 Log.e("MAinActivity :: pairDevice() ::: device :", ""
                         + (BluetoothDevice) item );
@@ -100,10 +107,22 @@ public class MainActivity extends AppCompatActivity {
                 ParcelUuid[] uuidTemp = ((BluetoothDevice) item).getUuids();
                 Log.e("MAinActivity :: pairDevice() ::: uuid : ", ""
                         + ((BluetoothDevice) item).getUuids().toString() );
+
+                tempListDevices.add( (BluetoothDevice) item + " - "
+                        + ((BluetoothDevice) item).getName() + " - "
+                        + ((BluetoothDevice) item).getUuids().toString() );
             }
+
+            btDeviceTextView =(TextView)findViewById(R.id.btDeviceTextView);
+
+            listViewBluetoothDevices=(ListView)findViewById(R.id.listViewBluetoothDevices);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, tempListDevices );
+            listViewBluetoothDevices.setAdapter(adapter);
+
+
             //ConnectThread connect = new ConnectThread(device,MY_UUID_INSECURE);
             //connect.start();
-
         }
     }
 }
