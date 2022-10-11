@@ -6,31 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-     <com.github.barteksc.pdfviewer.PDFView
-        android:id="@+id/pdfView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:id="@+id/linearLayoutActivityMain"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent"
+         android:orientation="vertical"
+         android:gravity="center">
 
-     <Button
-         android:id="@+id/buttonGotoPage100"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Button to goto page 100"/>
 
-     <Button
-         android:id="@+id/button3"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="ConnectionREq"
-         android:onClick="pairDevice"
-         android:layout_marginStart="34dp"
-         tools:layout_constraintTop_creator="1"
-         tools:layout_constraintBottom_creator="1"
-         app:layout_constraintBottom_toBottomOf="@+id/buttonGotoPage100"
-         tools:layout_constraintLeft_creator="1"
-         app:layout_constraintLeft_toLeftOf="parent"
-         android:layout_marginLeft="30dp"
-         app:layout_constraintVertical_bias="0.0" />
+
+          <Button
+              android:id="@+id/button3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="53dp"
+              android:layout_marginLeft="53dp"
+              android:layout_marginTop="53dp"
+              android:layout_marginEnd="53dp"
+              android:layout_marginRight="53dp"
+              android:layout_marginBottom="53dp"
+              android:onClick="pairDevice"
+              android:text="ConnectionREq"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintRight_toLeftOf="parent"
+              />
+
+
+
 
      <Button
          android:id="@+id/button2"
@@ -91,9 +93,18 @@
          app:layout_constraintTop_toTopOf="parent"
          android:background="#147D03" />
 
-<!--     <ListView-->
+     <!--     <ListView-->
 <!--         android:id="@+id/listViewBluetoothDevices"-->
 <!--         android:layout_width="match_parent"-->
 <!--         android:layout_height="match_parent"-->
 <!--         />-->
+          <Button
+              android:id="@+id/jumpToEbookReader"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Ready To Jump to Ebook Reader"
+              android:onClick="jumpToEbookReader"
+                            />
+     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
