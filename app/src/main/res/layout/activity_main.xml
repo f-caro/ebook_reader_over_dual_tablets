@@ -25,6 +25,29 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="0" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bt_select"
+                android:text="Select PDF"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_uri"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_path"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_marginTop="32dp"
+                android:gravity="center_horizontal" />
 
             <LinearLayout
                 android:id="@+id/linearLayoutActivityMain"

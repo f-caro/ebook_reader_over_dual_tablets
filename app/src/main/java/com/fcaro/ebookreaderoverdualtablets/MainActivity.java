@@ -1,5 +1,6 @@
 package com.fcaro.ebookreaderoverdualtablets;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +44,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     EditText send_data;
     TextView view_data;
     StringBuilder messages;
+    String filePathStr;
 
     PDFView pdfView;
     Button buttonGotoPage100, connectionReqButton, serverStartButton, sendMessageButton;
@@ -75,7 +84,11 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewTestConnection;
     ListView listBtDevicesView;
 
-  int leftTabletPage, rightTabletPage, tabletNum ;
+    Button btSelect;
+    TextView tvUri, tvPath;
+    ActivityResultLauncher<Intent> resultLauncher;
+
+    int leftTabletPage, rightTabletPage, tabletNum ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
         jumpLeftButton.setVisibility(View.INVISIBLE);
         buttonGotoPage100.setVisibility(View.INVISIBLE);
 
+        btSelect = findViewById(R.id.bt_select);
+        tvUri = findViewById(R.id.tv_uri);
+        tvPath = findViewById(R.id.tv_path);
+
 //        if (Build.VERSION.SDK_INT >= 23) {
 //            int permissionCheck = ContextCompat.checkSelfPermission( this , Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -118,8 +135,98 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 
+        // Initialize result launcher
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result){
+                        // Initialize result data
+                        Intent data = result.getData();
+                        // check condition
+                        if (data != null) {
+                            // When data is not equal to empty
+                            // Get PDf uri
+                            Uri sUri = data.getData();
+                            // set Uri on text view
+                            tvUri.setText(Html.fromHtml("<big><b>PDF Uri</b></big><br>"+ sUri) );
 
+                            // Get PDF path
+                            String sPath = sUri.getPath();
+                            filePathStr = sUri.getPath();
+                            // Set path on text view
+                            tvPath.setText(Html.fromHtml("<big><b>PDF Path</b></big><br>"+ sPath));
+                            tvPath.setText( sPath );
+                        }
+                    }
+                });
+
+        // Set click listener on button
+        btSelect.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override public void onClick(View v){
+                        // check condition
+                        if (ActivityCompat.checkSelfPermission(
+                                MainActivity.this,
+                                Manifest.permission
+                                        .READ_EXTERNAL_STORAGE)
+                                != PackageManager
+                                .PERMISSION_GRANTED) {
+                            // When permission is not granted
+                            // Result permission
+                            ActivityCompat.requestPermissions(
+                                    MainActivity.this,
+                                    new String[] {
+                                            Manifest.permission
+                                                    .READ_EXTERNAL_STORAGE },
+                                    1);
+                        }
+                        else {
+                            // When permission is granted
+                            // Create method
+                            selectPDF();
+                        }
+                    }
+                });
     }
+
+    private void selectPDF()
+    {
+        // Initialize intent
+        Intent intent
+                = new Intent(Intent.ACTION_GET_CONTENT);
+        // set type
+        intent.setType("application/pdf");
+        // Launch intent
+        resultLauncher.launch(intent);
+    }
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(
+                requestCode, permissions, grantResults);
+
+        // check condition
+        if (requestCode == 1
+                && grantResults.length > 0
+                && grantResults[0]
+                == PackageManager.PERMISSION_GRANTED) {
+            // When permission is granted
+            // Call method
+            selectPDF();
+        }
+        else {
+            // When permission is denied
+            // Display toast
+            Toast.makeText(getApplicationContext(),
+                            "Permission Denied",
+                            Toast.LENGTH_SHORT)
+                 .show();
+        }
+    }
+
 
     public void SendMessage(View v) {
         byte[] bytes = send_data.getText().toString().getBytes(Charset.defaultCharset());
@@ -174,7 +281,8 @@ public class MainActivity extends AppCompatActivity {
 
         InputStream in = null;
 
-        File pdffile = new File("/sdcard/Download/STA4811.pdf");
+        //File pdffile = new File("/sdcard/Download/STA4811.pdf");
+        File pdffile = new File(filePathStr);
         Boolean chkFile = pdffile.exists();
         Log.d("pdffile exists? ::: ", chkFile.toString() );
         pdfView = (PDFView)findViewById(R.id.pdfView);
