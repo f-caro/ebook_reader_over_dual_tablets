@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+     <com.github.barteksc.pdfviewer.PDFView
+         android:id="@+id/pdfView"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
          android:id="@+id/linearLayoutActivityMain"
          android:layout_width="fill_parent"
@@ -16,7 +21,7 @@
 
 
           <Button
-              android:id="@+id/button3"
+              android:id="@+id/connectionReqButton"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginStart="53dp"
@@ -35,7 +40,7 @@
 
 
      <Button
-         android:id="@+id/button2"
+         android:id="@+id/serverStartButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="Server"
@@ -49,7 +54,7 @@
          android:layout_marginRight="53dp" />
 
      <Button
-         android:id="@+id/button"
+         android:id="@+id/sendMessageButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="SendMessage to next Tablet"
@@ -64,7 +69,7 @@
          android:background="#147D03" />
 
      <EditText
-         android:id="@+id/editText"
+         android:id="@+id/editTextTestConnection"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:ems="10"
@@ -83,7 +88,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="Hello World!"
-         android:id="@+id/textView"
+         android:id="@+id/textViewTestConnection"
          tools:layout_constraintTop_creator="1"
          tools:layout_constraintRight_creator="1"
          app:layout_constraintRight_toRightOf="parent"
@@ -99,12 +104,49 @@
 <!--         android:layout_height="match_parent"-->
 <!--         />-->
           <Button
-              android:id="@+id/jumpToEbookReader"
+              android:id="@+id/openEbookReader"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="Ready To Jump to Ebook Reader"
-              android:onClick="jumpToEbookReader"
+              android:onClick="openEbookReader"
                             />
+
      </LinearLayout>
 
+
+
+          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutEbookReader"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="horizontal"
+              android:gravity="bottom">
+               <Button
+                   android:id="@+id/jumpLeftButton"
+                   android:layout_width="100px"
+                   android:layout_height="100px"
+                   android:layout_alignParentLeft="true"
+                   android:layout_centerHorizontal="true"
+                   android:layout_marginLeft="17dp"
+                   android:onClick="PageJumpLeft"
+                   android:text="-"
+                   android:textSize="100sp" />
+
+               <Button
+                   android:id="@+id/buttonGotoPage100"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Button to goto page 100" />
+               <Button
+                   android:id="@+id/jumpRightButton"
+                   android:layout_width="100px"
+                   android:layout_height="100px"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerHorizontal="true"
+                   android:onClick="PageJumpRight"
+                   android:text="+"
+                   android:textSize="100sp" />
+          </LinearLayout>
+
+     </com.github.barteksc.pdfviewer.PDFView>
 </androidx.constraintlayout.widget.ConstraintLayout>

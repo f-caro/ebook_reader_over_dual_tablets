@@ -50,35 +50,53 @@ public class MainActivity extends AppCompatActivity {
     //private static final UUID MY_UUID_INSECURE = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
     private static final int REQUEST_ENABLE_BT = 1;
-    public static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    public static BluetoothDevice mmDevice;
+    public BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    public BluetoothDevice mmDevice;
     private UUID deviceUUID;
     public static ConnectedThread mConnectedThread;
     private Handler handler;
 
+    String m_bluetoothName;
+    String m_otherBTname;
     String TAG = "MainActivity";
     EditText send_data;
     TextView view_data;
     StringBuilder messages;
-    Button jumpLeftButton, jumpRightButton, jumpToEbookReaderButton ;
 
+    PDFView pdfView;
+    Button buttonGotoPage100, connectionReqButton, serverStartButton, sendMessageButton;
+    Button jumpLeftButton, jumpRightButton, openEbookReaderButton ;
     ListView listViewBluetoothDevices;
     TextView btDeviceTextView;
+    EditText editTextTestConnection;
+    TextView textViewTestConnection;
 
-//  int leftTabletPage, rightTabletPage ;
+  int leftTabletPage, rightTabletPage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //PDFView pdfView = null;
-//        leftTabletPage = 1;
-//        rightTabletPage = 2;
+        PDFView pdfView = null;
+        leftTabletPage = 1;
+        rightTabletPage = 2;
 
-//        jumpLeftButton = (Button) findViewById(R.id.jumpLeftButton);
-//        jumpRightButton = (Button) findViewById(R.id.jumpRightButton);
-        jumpToEbookReaderButton = (Button) findViewById(R.id.jumpToEbookReader);
+        connectionReqButton = (Button) findViewById(R.id.connectionReqButton);
+        serverStartButton = (Button) findViewById(R.id.serverStartButton);
+        sendMessageButton = (Button) findViewById(R.id.sendMessageButton);
+
+        jumpLeftButton = (Button) findViewById(R.id.jumpLeftButton);
+        jumpRightButton = (Button) findViewById(R.id.jumpRightButton);
+        buttonGotoPage100 = (Button) findViewById(R.id.buttonGotoPage100);//get id of button 1
+        openEbookReaderButton = (Button) findViewById(R.id.openEbookReader);
+
+        editTextTestConnection = (EditText) findViewById(R.id.editTextTestConnection);
+        textViewTestConnection = (TextView) findViewById(R.id.textViewTestConnection);
+
+        jumpRightButton.setVisibility(View.INVISIBLE);
+        jumpLeftButton.setVisibility(View.INVISIBLE);
+        buttonGotoPage100.setVisibility(View.INVISIBLE);
 
 //        if (Build.VERSION.SDK_INT >= 23) {
 //            int permissionCheck = ContextCompat.checkSelfPermission( this , Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -86,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
 //                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 //            }
 //        }
-        send_data =(EditText) findViewById(R.id.editText);
-        view_data = (TextView) findViewById(R.id.textView);
+        send_data =(EditText) findViewById(R.id.editTextTestConnection);
+        view_data = (TextView) findViewById(R.id.textViewTestConnection);
 
         if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new
@@ -102,43 +120,72 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    public void PageJumpLeft(View v) {
-//        if(leftTabletPage - 2 > 0) { leftTabletPage -= 2; }
-//        if(rightTabletPage - 2 > 0) { rightTabletPage -= 2; }
-//        String msgSend = leftTabletPage  + "," + rightTabletPage;
-//        byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
-//        mConnectedThread.write(bytes);
-//    }
-//
-//    public void PageJumpRight(View v) {
-//        if(leftTabletPage + 2 > 0) { leftTabletPage += 2; }
-//        if(rightTabletPage + 2 > 0) { rightTabletPage += 2; }
-//        String msgSend = leftTabletPage  + "," + rightTabletPage;
-//        byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
-//        mConnectedThread.write(bytes);
-//    }
+    public void PageJumpLeft(View v) {
+        if(leftTabletPage - 2 > 0) { leftTabletPage -= 2; }
+        if(rightTabletPage - 2 > 0) { rightTabletPage -= 2; }
+        String msgSend = leftTabletPage  + "," + rightTabletPage;
+        byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
+        mConnectedThread.write(bytes);
+    }
 
-//    public void updatePageNumbers(String msgStr ){
-//        String[] separated = msgStr.split(",");
-//        leftTabletPage = Integer.parseInt(separated[0]);
-//        rightTabletPage = Integer.parseInt(separated[1]);
-//
-//        BluetoothAdapter m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        String m_bluetoothName = m_BluetoothAdapter.getName();
-//
-//        if( "BG2-W09".equals( m_bluetoothName )){
-//            //pdfView.jumpTo( leftTabletPage );
-//        }
-//        if( "IdeaTab A1000-F".equals( m_bluetoothName )  ){
-//            //pdfView.jumpTo( rightTabletPage );
-//        }
-//
-//    }
+    public void PageJumpRight(View v) {
+        if(leftTabletPage + 2 > 0) { leftTabletPage += 2; }
+        if(rightTabletPage + 2 > 0) { rightTabletPage += 2; }
+        String msgSend = leftTabletPage  + "," + rightTabletPage;
+        byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
+        mConnectedThread.write(bytes);
+    }
 
-    public void jumpToEbookReader(View v){
-        final Context context = this;
-        Intent intent = new Intent(context, EbookReaderActivity.class);
-        startActivity(intent);
+    public void updatePageNumbers(String msgStr ){
+        String[] separated = msgStr.split(",");
+        leftTabletPage = Integer.parseInt(separated[0]);
+        rightTabletPage = Integer.parseInt(separated[1]);
+
+        if( "BG2-W09".equals( m_bluetoothName )){
+            pdfView.jumpTo( leftTabletPage );
+        }
+        if( "IdeaTab A1000-F".equals( m_bluetoothName )  ){
+            pdfView.jumpTo( rightTabletPage );
+        }
+
+    }
+
+    public void openEbookReader(View v){
+//        final Context context = this;
+//        Intent intent = new Intent(context, EbookReaderActivity.class);
+//        startActivity(intent);
+
+        AssetManager assetManager = getAssets();
+
+        InputStream in = null;
+
+        File pdffile = new File("/sdcard/Download/STA4811.pdf");
+        Boolean chkFile = pdffile.exists();
+        Log.d("pdffile exists? ::: ", chkFile.toString() );
+        pdfView = (PDFView)findViewById(R.id.pdfView);
+        pdfView.fromFile(pdffile).load();
+
+        jumpRightButton.setVisibility(v.VISIBLE);
+        jumpLeftButton.setVisibility(v.VISIBLE);
+        buttonGotoPage100.setVisibility(v.VISIBLE);
+
+
+        openEbookReaderButton.setVisibility(v.INVISIBLE);
+        connectionReqButton.setVisibility(v.INVISIBLE );
+        serverStartButton.setVisibility(v.INVISIBLE);
+        sendMessageButton.setVisibility(v.INVISIBLE);
+        editTextTestConnection.setVisibility(v.INVISIBLE);
+        textViewTestConnection.setVisibility(v.INVISIBLE);
+
+        buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pdfView.jumpTo(100);
+                Toast.makeText(getApplicationContext(),
+                        buttonGotoPage100.getText() ,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void pairDevice(View v) {
@@ -150,6 +197,9 @@ public class MainActivity extends AppCompatActivity {
         // --->  E/MAinActivity :: m_bluetoothAdd :: D4:22:3F:52:D2:CC
 //        this.MY_APP_UUID = UUID.fromString( m_bluetoothAdd );
 
+        m_bluetoothName = bluetoothAdapter.getName();
+        Log.e("MAinActivity :: pairDevice() : currentDeviceName", ""
+                + m_bluetoothName  );
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
         Log.e("MAinActivity", "" + pairedDevices.size() );
@@ -335,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             view_data.setText(incomingMessage);
                             if( incomingMessage.contains(",") ) {
-                                (EbookReaderActivity ).updatePageNumbers(incomingMessage);
+                                updatePageNumbers(incomingMessage);
                             }
                         }
                     });
