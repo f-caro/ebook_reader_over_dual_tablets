@@ -153,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePage(){
+        tabletNum = Integer.parseInt( tabletNumEditText.getText().toString() );
 
         if( tabletNum == 0 ){   pdfView.jumpTo( leftTabletPage );   }
-        if( tabletNum == 1 ){   pdfView.jumpTo( leftTabletPage );   }
+        if( tabletNum == 1 ){   pdfView.jumpTo( rightTabletPage );   }
 //        if( "BG2-W09".equals( m_bluetoothName )){
 //            pdfView.jumpTo( leftTabletPage );
 //        }
@@ -190,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
         sendMessageButton.setVisibility(v.INVISIBLE);
         editTextTestConnection.setVisibility(v.INVISIBLE);
         textViewTestConnection.setVisibility(v.INVISIBLE);
+        tabletNumEditText.setVisibility(v.INVISIBLE);
+        listBtDevicesView.setVisibility(v.INVISIBLE);
 
         buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -459,6 +462,7 @@ public class MainActivity extends AppCompatActivity {
                 mmSocket.close();
             } catch (IOException e) { }
         }
+
     }
 
     public void Start_Server(View view) {
@@ -525,5 +529,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        Log.d(TAG, "Activity is being destroyed");
     }
 }
