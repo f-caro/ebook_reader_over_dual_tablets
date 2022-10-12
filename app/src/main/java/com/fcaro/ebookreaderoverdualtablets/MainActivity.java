@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     TextView btDeviceTextView;
     EditText editTextTestConnection;
     TextView textViewTestConnection;
+    ListView listBtDevicesView;
 
   int leftTabletPage, rightTabletPage ;
 
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         String msgSend = leftTabletPage  + "," + rightTabletPage;
         byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
         mConnectedThread.write(bytes);
+        changePage();
     }
 
     public void PageJumpRight(View v) {
@@ -134,13 +138,17 @@ public class MainActivity extends AppCompatActivity {
         String msgSend = leftTabletPage  + "," + rightTabletPage;
         byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
         mConnectedThread.write(bytes);
+        changePage();
     }
 
     public void updatePageNumbers(String msgStr ){
         String[] separated = msgStr.split(",");
         leftTabletPage = Integer.parseInt(separated[0]);
         rightTabletPage = Integer.parseInt(separated[1]);
+        changePage();
+    }
 
+    public void changePage(){
         if( "BG2-W09".equals( m_bluetoothName )){
             pdfView.jumpTo( leftTabletPage );
         }
@@ -149,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
     public void openEbookReader(View v){
 //        final Context context = this;
 //        Intent intent = new Intent(context, EbookReaderActivity.class);
@@ -196,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
 //                + m_bluetoothAdd  );
         // --->  E/MAinActivity :: m_bluetoothAdd :: D4:22:3F:52:D2:CC
 //        this.MY_APP_UUID = UUID.fromString( m_bluetoothAdd );
+        listBtDevicesView=(ListView)findViewById(R.id.listBtDevicesView);
 
         m_bluetoothName = bluetoothAdapter.getName();
         Log.e("MAinActivity :: pairDevice() : currentDeviceName", ""
@@ -208,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
+            ArrayList<HashMap<String,String> > arrayList = new ArrayList<>();
+
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
@@ -219,14 +229,26 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if( "IdeaTab A1000-F".equals( deviceName )  ){    chosenDevice = indexBt;   }
                 indexBt++;
+                HashMap<String,String> hashMapItem = new HashMap<>();
+                hashMapItem.put("deviceName", deviceName);
+                arrayList.add(hashMapItem);
             }
-            Object[] devices = pairedDevices.toArray();
-            BluetoothDevice device = (BluetoothDevice) devices[(int) chosenDevice];
+            String[] from = {"deviceName"};
+            int[] to = {R.id.btDeviceTextView};
+            SimpleAdapter simpleAdapter=new SimpleAdapter(this,
+                    arrayList,
+                    R.layout.bt_device_list,
+                    from ,
+                    to);
+            listBtDevicesView.setAdapter(simpleAdapter);
 
-            Log.e("MAinActivity :: pairDevice() : Connecting to :::", ""
-                    + device.getName() + " --- " + device.getAddress() );
-            ConnectThread connect = new ConnectThread(device, MY_APP_UUID );
-            connect.start();
+//            Object[] devices = pairedDevices.toArray();
+//            BluetoothDevice device = (BluetoothDevice) devices[(int) chosenDevice];
+//
+//            Log.e("MAinActivity :: pairDevice() : Connecting to :::", ""
+//                    + device.getName() + " --- " + device.getAddress() );
+//            ConnectThread connect = new ConnectThread(device, MY_APP_UUID );
+//            connect.start();
         }
 
 

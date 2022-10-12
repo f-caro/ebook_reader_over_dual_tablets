@@ -36,7 +36,13 @@
               app:layout_constraintRight_toLeftOf="parent"
               />
 
-
+          <ListView
+              android:id="@+id/listBtDevicesView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:divider="#000"
+              android:dividerHeight="2dp"
+              android:listSelector="#600"/>
 
 
      <Button
