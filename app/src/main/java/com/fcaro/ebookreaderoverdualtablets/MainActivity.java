@@ -301,6 +301,9 @@ public class MainActivity extends AppCompatActivity {
         textViewTestConnection.setVisibility(v.INVISIBLE);
         tabletNumEditText.setVisibility(v.INVISIBLE);
         listBtDevicesView.setVisibility(v.INVISIBLE);
+        tvPath.setVisibility(v.INVISIBLE);
+        tvUri.setVisibility(v.INVISIBLE);
+        btSelect.setVisibility(v.INVISIBLE);
 
         buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
             @Override
