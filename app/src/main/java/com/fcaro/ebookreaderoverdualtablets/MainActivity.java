@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
     Button jumpLeftButton, jumpRightButton, openEbookReaderButton ;
     ListView listViewBluetoothDevices;
     TextView btDeviceTextView;
-    EditText editTextTestConnection;
+    EditText editTextTestConnection, tabletNumEditText;
     TextView textViewTestConnection;
     ListView listBtDevicesView;
 
-  int leftTabletPage, rightTabletPage ;
+  int leftTabletPage, rightTabletPage, tabletNum ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         editTextTestConnection = (EditText) findViewById(R.id.editTextTestConnection);
         textViewTestConnection = (TextView) findViewById(R.id.textViewTestConnection);
+        tabletNumEditText = (EditText) findViewById(R.id.tabletNumEditText);
 
         jumpRightButton.setVisibility(View.INVISIBLE);
         jumpLeftButton.setVisibility(View.INVISIBLE);
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+
+
     }
 
     public void SendMessage(View v) {
@@ -149,12 +153,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePage(){
-        if( "BG2-W09".equals( m_bluetoothName )){
-            pdfView.jumpTo( leftTabletPage );
-        }
-        if( "IdeaTab A1000-F".equals( m_bluetoothName )  ){
-            pdfView.jumpTo( rightTabletPage );
-        }
+
+        if( tabletNum == 0 ){   pdfView.jumpTo( leftTabletPage );   }
+        if( tabletNum == 1 ){   pdfView.jumpTo( leftTabletPage );   }
+//        if( "BG2-W09".equals( m_bluetoothName )){
+//            pdfView.jumpTo( leftTabletPage );
+//        }
+//        if( "IdeaTab A1000-F".equals( m_bluetoothName )  ){
+//            pdfView.jumpTo( rightTabletPage );
+//        }
 
     }
     public void openEbookReader(View v){
@@ -203,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
 //                + m_bluetoothAdd  );
         // --->  E/MAinActivity :: m_bluetoothAdd :: D4:22:3F:52:D2:CC
 //        this.MY_APP_UUID = UUID.fromString( m_bluetoothAdd );
+        tabletNum = Integer.parseInt( tabletNumEditText.getText().toString() );
         listBtDevicesView=(ListView)findViewById(R.id.listBtDevicesView);
 
         m_bluetoothName = bluetoothAdapter.getName();
@@ -223,12 +231,12 @@ public class MainActivity extends AppCompatActivity {
                 String deviceHardwareAddress = device.getAddress(); // MAC address
                 Log.e("MAinActivity :: pairDevice() :", ""
                         + deviceName + " --- " + deviceHardwareAddress );
-                if( "BG2-W09".equals( deviceName )){            chosenDevice = indexBt;
-                    Log.e("MAinActivity :: pairDevice() : Connecting to :::", ""
-                            +  indexBt + " -- chosenDevice : " +  chosenDevice );
-                }
-                if( "IdeaTab A1000-F".equals( deviceName )  ){    chosenDevice = indexBt;   }
-                indexBt++;
+//                if( "BG2-W09".equals( deviceName )){            chosenDevice = indexBt;
+//                    Log.e("MAinActivity :: pairDevice() : Connecting to :::", ""
+//                            +  indexBt + " -- chosenDevice : " +  chosenDevice );
+//                }
+//                if( "IdeaTab A1000-F".equals( deviceName )  ){    chosenDevice = indexBt;   }
+                //indexBt++;
                 HashMap<String,String> hashMapItem = new HashMap<>();
                 hashMapItem.put("deviceName", deviceName);
                 arrayList.add(hashMapItem);
@@ -241,7 +249,21 @@ public class MainActivity extends AppCompatActivity {
                     from ,
                     to);
             listBtDevicesView.setAdapter(simpleAdapter);
+            Object[] devices = pairedDevices.toArray();
 
+            listBtDevicesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    BluetoothDevice device = (BluetoothDevice) devices[i];
+                    Log.e("MAinActivity :: pairDevice() :: setOnItemClickListener() : ", ""
+                    + device.getName() + " --- " + device.getAddress() );
+                    ConnectThread connect = new ConnectThread(device, MY_APP_UUID );
+                    connect.start();
+
+                    AcceptThread accept = new AcceptThread();
+                    accept.start();
+                }
+            });
 //            Object[] devices = pairedDevices.toArray();
 //            BluetoothDevice device = (BluetoothDevice) devices[(int) chosenDevice];
 //

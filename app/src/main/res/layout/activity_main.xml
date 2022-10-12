@@ -2,157 +2,134 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context=".MainActivity">
 
-     <com.github.barteksc.pdfviewer.PDFView
-         android:id="@+id/pdfView"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent">
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-         android:id="@+id/linearLayoutActivityMain"
-         android:layout_width="fill_parent"
-         android:layout_height="fill_parent"
-         android:orientation="vertical"
-         android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <EditText
+                android:id="@+id/tabletNumEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0" />
 
+            <LinearLayout
+                android:id="@+id/linearLayoutActivityMain"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-          <Button
-              android:id="@+id/connectionReqButton"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="53dp"
-              android:layout_marginLeft="53dp"
-              android:layout_marginTop="53dp"
-              android:layout_marginEnd="53dp"
-              android:layout_marginRight="53dp"
-              android:layout_marginBottom="53dp"
-              android:onClick="pairDevice"
-              android:text="ConnectionREq"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintRight_toLeftOf="parent"
-              />
+                <Button
+                    android:id="@+id/connectionReqButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="pairDevice"
+                    android:text="ConnectionREq" />
 
-          <ListView
-              android:id="@+id/listBtDevicesView"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:divider="#000"
-              android:dividerHeight="2dp"
-              android:listSelector="#600"/>
+                <Button
+                    android:id="@+id/serverStartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="Start_Server"
+                    android:text="Server" />
 
+                <Button
+                    android:id="@+id/sendMessageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#147D03"
+                    android:onClick="SendMessage"
+                    android:text="TestSendMessage" />
+            </LinearLayout>
 
-     <Button
-         android:id="@+id/serverStartButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Server"
-         android:onClick="Start_Server"
-         android:layout_marginEnd="53dp"
-         tools:layout_constraintRight_creator="1"
-         tools:layout_constraintBottom_creator="1"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintRight_toRightOf="parent"
-         android:layout_marginBottom="84dp"
-         android:layout_marginRight="53dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-     <Button
-         android:id="@+id/sendMessageButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="SendMessage to next Tablet"
-         android:onClick="SendMessage"
-         tools:layout_constraintTop_creator="1"
-         tools:layout_constraintRight_creator="1"
-         app:layout_constraintRight_toRightOf="parent"
-         android:layout_marginTop="22dp"
-         app:layout_constraintTop_toBottomOf="@+id/editText"
-         tools:layout_constraintLeft_creator="1"
-         app:layout_constraintLeft_toLeftOf="parent"
-         android:background="#147D03" />
+                <EditText
+                    android:id="@+id/editTextTestConnection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#147D03"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="TestStringToSend" />
 
-     <EditText
-         android:id="@+id/editTextTestConnection"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:ems="10"
-         android:inputType="textPersonName"
-         android:text="Name"
-         tools:layout_constraintTop_creator="1"
-         tools:layout_constraintRight_creator="1"
-         app:layout_constraintRight_toRightOf="parent"
-         android:layout_marginTop="153dp"
-         tools:layout_constraintLeft_creator="1"
-         app:layout_constraintLeft_toLeftOf="parent"
-         app:layout_constraintTop_toTopOf="parent"
-         android:background="#147D03" />
-
-     <TextView
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Hello World!"
-         android:id="@+id/textViewTestConnection"
-         tools:layout_constraintTop_creator="1"
-         tools:layout_constraintRight_creator="1"
-         app:layout_constraintRight_toRightOf="parent"
-         android:layout_marginTop="58dp"
-         tools:layout_constraintLeft_creator="1"
-         app:layout_constraintLeft_toLeftOf="parent"
-         app:layout_constraintTop_toTopOf="parent"
-         android:background="#147D03" />
-
-     <!--     <ListView-->
-<!--         android:id="@+id/listViewBluetoothDevices"-->
-<!--         android:layout_width="match_parent"-->
-<!--         android:layout_height="match_parent"-->
-<!--         />-->
-          <Button
-              android:id="@+id/openEbookReader"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Ready To Jump to Ebook Reader"
-              android:onClick="openEbookReader"
-                            />
-
-     </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewTestConnection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#147D03"
+                    android:text="Test Results Here" />
 
 
+            </LinearLayout>
 
-          <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/linearLayoutEbookReader"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="horizontal"
-              android:gravity="bottom">
-               <Button
-                   android:id="@+id/jumpLeftButton"
-                   android:layout_width="100px"
-                   android:layout_height="100px"
-                   android:layout_alignParentLeft="true"
-                   android:layout_centerHorizontal="true"
-                   android:layout_marginLeft="17dp"
-                   android:onClick="PageJumpLeft"
-                   android:text="-"
-                   android:textSize="100sp" />
 
-               <Button
-                   android:id="@+id/buttonGotoPage100"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="Button to goto page 100" />
-               <Button
-                   android:id="@+id/jumpRightButton"
-                   android:layout_width="100px"
-                   android:layout_height="100px"
-                   android:layout_alignParentRight="true"
-                   android:layout_centerHorizontal="true"
-                   android:onClick="PageJumpRight"
-                   android:text="+"
-                   android:textSize="100sp" />
-          </LinearLayout>
+            <ListView
+                android:id="@+id/listBtDevicesView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#000"
+                android:dividerHeight="2dp"
+                android:listSelector="#600" />
 
-     </com.github.barteksc.pdfviewer.PDFView>
+            <Button
+                android:id="@+id/openEbookReader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="openEbookReader"
+                android:text="Ready To Jump to Ebook Reader" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/linearLayoutEbookReader"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/jumpLeftButton"
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="17dp"
+                    android:onClick="PageJumpLeft"
+                    android:text="-"
+                    android:textSize="100sp" />
+
+                <Button
+                    android:id="@+id/buttonGotoPage100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button to goto page 100" />
+
+                <Button
+                    android:id="@+id/jumpRightButton"
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:onClick="PageJumpRight"
+                    android:text="+"
+                    android:textSize="100sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.github.barteksc.pdfviewer.PDFView>
 </androidx.constraintlayout.widget.ConstraintLayout>
