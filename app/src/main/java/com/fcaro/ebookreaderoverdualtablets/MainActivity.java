@@ -20,7 +20,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             rightTabletPage = 2;
         }
 
-        if( tabletNum != 0 ) { tabletNumEditText.setText( tabletNum );  }
+        if( tabletNum != 0 ) { tabletNumEditText.setText( Integer.toString( tabletNum ) );  }
 
 //        if (Build.VERSION.SDK_INT >= 23) {
 //            int permissionCheck = ContextCompat.checkSelfPermission( this , Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -156,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
                     Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+
+        tabletNumEditText.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                updateKeyValSettings("tabletNum",  tabletNumEditText.getText().toString() );
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
 
         // Initialize result launcher
         resultLauncher = registerForActivityResult(
@@ -325,7 +338,13 @@ public class MainActivity extends AppCompatActivity {
         Boolean chkFile = pdffile.exists();
         Log.d("pdffile exists? ::: ", chkFile.toString() );
         pdfView = (PDFView)findViewById(R.id.pdfView);
-        pdfView.fromFile(pdffile).load();
+        pdfView.fromFile(pdffile).onRender(new OnRenderListener() {
+            @Override
+            public void onInitiallyRendered(int pages, float pageWidth, float pageHeight) {
+                Log.e("MAinActivity:openEbookReader()::onRender()", recentMsg  );
+                if(recentMsg.contains(",") ){   updatePageNumbers(recentMsg);   }
+            }
+        }).load();
 
         jumpRightButton.setVisibility(v.VISIBLE);
         jumpLeftButton.setVisibility(v.VISIBLE);
@@ -344,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
         tvUri.setVisibility(v.INVISIBLE);
         btSelect.setVisibility(v.INVISIBLE);
 
-        if(recentMsg.contains(",") ){   updatePageNumbers(recentMsg);   }
+
 
         buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
             @Override
