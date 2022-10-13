@@ -48,3 +48,10 @@ which requires reading a file from assets ---> https://medium.com/@mislam_73732/
  Requires in build.gradle ---> implementation "androidx.activity:activity:1.3.1" --- not 1.6.0, due to some imports not found
  --> https://stackoverflow.com/questions/61622254/androidx-activityresultcontracts-package-not-found-class-not-found
 Requires in build.gradle ---> implementation "androidx.fragment:fragment:1.3.0"  --- not 1.5.3, due to minSDK compatibility
+
+##Need to implement Persistance of previously used Settings:
+      Good summary --> https://www.vogella.com/tutorials/AndroidFileBasedPersistence/article.html
+      Small settings are stored, Key/Value pairs saved and loaded by App.
+      tabletNum ( tablet 0 = left page, tablet 1= right page), recentMsg (e.g.  19,20),  filePathStr ( of previous opened PDF file )
+      pdfView.onRender(new OnRenderListener()) added to jump to previous pages.
+      pdfView.load() takes a full second to load PDF file, needs async processing of command to jumptoPage.
