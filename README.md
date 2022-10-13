@@ -48,3 +48,5 @@ which requires reading a file from assets ---> https://medium.com/@mislam_73732/
  Requires in build.gradle ---> implementation "androidx.activity:activity:1.3.1" --- not 1.6.0, due to some imports not found
  --> https://stackoverflow.com/questions/61622254/androidx-activityresultcontracts-package-not-found-class-not-found
 Requires in build.gradle ---> implementation "androidx.fragment:fragment:1.3.0"  --- not 1.5.3, due to minSDK compatibility
+
+check
