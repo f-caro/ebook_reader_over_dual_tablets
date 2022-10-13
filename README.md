@@ -55,3 +55,5 @@ Requires in build.gradle ---> implementation "androidx.fragment:fragment:1.3.0" 
       tabletNum ( tablet 0 = left page, tablet 1= right page), recentMsg (e.g.  19,20),  filePathStr ( of previous opened PDF file )
       pdfView.onRender(new OnRenderListener()) added to jump to previous pages.
       pdfView.load() takes a full second to load PDF file, needs async processing of command to jumptoPage.
+
+##Need UI improvements, hopefully something similar to BootStrap tricks !!??
