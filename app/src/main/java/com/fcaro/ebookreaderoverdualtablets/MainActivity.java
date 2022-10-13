@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.net.Uri;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     public static ConnectedThread mConnectedThread;
     private Handler handler;
 
+    SharedPreferences ero2t_settings;
+
     String m_bluetoothName;
     String m_otherBTname;
     String TAG = "MainActivity";
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     TextView view_data;
     StringBuilder messages;
     String filePathStr;
+    String recentMsg;
 
     PDFView pdfView;
     Button buttonGotoPage100, connectionReqButton, serverStartButton, sendMessageButton;
@@ -95,9 +99,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ero2t_settings = getSharedPreferences("ERO2T_settings", Context.MODE_PRIVATE);
+        filePathStr = ero2t_settings.getString("filePathStr", "");
+        tabletNum = Integer.parseInt( ero2t_settings.getString("tabletNum", "0") );
+        recentMsg = ero2t_settings.getString("recentMsg", "");
+
         PDFView pdfView = null;
-        leftTabletPage = 1;
-        rightTabletPage = 2;
+
+//        leftTabletPage = 1;
+//        rightTabletPage = 2;
 
         connectionReqButton = (Button) findViewById(R.id.connectionReqButton);
         serverStartButton = (Button) findViewById(R.id.serverStartButton);
@@ -120,12 +130,24 @@ public class MainActivity extends AppCompatActivity {
         tvUri = findViewById(R.id.tv_uri);
         tvPath = findViewById(R.id.tv_path);
 
+        if( !"".equals(filePathStr) ){  tvPath.setText( filePathStr );  }
+
+        if( recentMsg.contains(",") ){
+            splitMsgStr(recentMsg);
+        } else {
+            leftTabletPage = 1;
+            rightTabletPage = 2;
+        }
+
+        if( tabletNum != 0 ) { tabletNumEditText.setText( tabletNum );  }
+
 //        if (Build.VERSION.SDK_INT >= 23) {
 //            int permissionCheck = ContextCompat.checkSelfPermission( this , Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
 //                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 //            }
 //        }
+
         send_data =(EditText) findViewById(R.id.editTextTestConnection);
         view_data = (TextView) findViewById(R.id.textViewTestConnection);
 
@@ -157,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                             // Set path on text view
                             tvPath.setText(Html.fromHtml("<big><b>PDF Path</b></big><br>"+ sPath));
                             tvPath.setText( sPath );
+                            updateKeyValSettings("filePathStr", filePathStr );
                         }
                     }
                 });
@@ -238,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
         if(leftTabletPage - 2 > 0) { leftTabletPage -= 2; }
         if(rightTabletPage - 2 > 0) { rightTabletPage -= 2; }
         String msgSend = leftTabletPage  + "," + rightTabletPage;
+        updateKeyValSettings("recentMsg", msgSend );
         byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
         mConnectedThread.write(bytes);
         changePage();
@@ -247,16 +271,31 @@ public class MainActivity extends AppCompatActivity {
         if(leftTabletPage + 2 > 0) { leftTabletPage += 2; }
         if(rightTabletPage + 2 > 0) { rightTabletPage += 2; }
         String msgSend = leftTabletPage  + "," + rightTabletPage;
+        updateKeyValSettings("recentMsg", msgSend );
         byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
         mConnectedThread.write(bytes);
         changePage();
     }
 
     public void updatePageNumbers(String msgStr ){
+//        String[] separated = msgStr.split(",");
+//        leftTabletPage = Integer.parseInt(separated[0]);
+//        rightTabletPage = Integer.parseInt(separated[1]);
+        splitMsgStr(msgStr);
+        updateKeyValSettings("recentMsg", msgStr );
+        changePage();
+    }
+
+    public void splitMsgStr( String msgStr ){
         String[] separated = msgStr.split(",");
         leftTabletPage = Integer.parseInt(separated[0]);
         rightTabletPage = Integer.parseInt(separated[1]);
-        changePage();
+    }
+
+    public void updateKeyValSettings(String key, String val){
+        SharedPreferences.Editor edit = ero2t_settings.edit();
+        edit.putString( key , val );
+        edit.apply();
     }
 
     public void changePage(){
@@ -304,6 +343,8 @@ public class MainActivity extends AppCompatActivity {
         tvPath.setVisibility(v.INVISIBLE);
         tvUri.setVisibility(v.INVISIBLE);
         btSelect.setVisibility(v.INVISIBLE);
+
+        if(recentMsg.contains(",") ){   updatePageNumbers(recentMsg);   }
 
         buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -371,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
                     BluetoothDevice device = (BluetoothDevice) devices[i];
                     Log.e("MAinActivity :: pairDevice() :: setOnItemClickListener() : ", ""
                     + device.getName() + " --- " + device.getAddress() );
+                    send_data.setText( device.getName() );
                     ConnectThread connect = new ConnectThread(device, MY_APP_UUID );
                     connect.start();
 
