@@ -57,3 +57,8 @@ Requires in build.gradle ---> implementation "androidx.fragment:fragment:1.3.0" 
       pdfView.load() takes a full second to load PDF file, needs async processing of command to jumptoPage.
 
 ##Need UI improvements, hopefully something similar to BootStrap tricks !!??
+Material design is vast and dangerous. Ionic/ReactNavtive UI's cover a lot of gruntwork when compared to Android UI.
+Tried implementing a ViewPager2 component... ---> https://github.com/foxandroid/ViewPager2_  ---> Youtube tutorial ---> https://www.youtube.com/watch?v=O8LA26sAt7Y
+But realised that it is too much for something as sincere as a settings page.
+So used RelativeLayout ---> and its basic, but good enough for now.
+Future revision ---> implement Better UI components.

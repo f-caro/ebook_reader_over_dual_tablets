@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listBtDevicesView;
 
     Button btSelect;
-    TextView tvUri, tvPath;
+    TextView tvUri, tvPath, tvLabelTabletPage;
     ActivityResultLauncher<Intent> resultLauncher;
 
     int leftTabletPage, rightTabletPage, tabletNum ;
@@ -125,13 +125,17 @@ public class MainActivity extends AppCompatActivity {
         textViewTestConnection = (TextView) findViewById(R.id.textViewTestConnection);
         tabletNumEditText = (EditText) findViewById(R.id.tabletNumEditText);
 
+        send_data =(EditText) findViewById(R.id.editTextTestConnection);
+        view_data = (TextView) findViewById(R.id.textViewTestConnection);
+
         jumpRightButton.setVisibility(View.INVISIBLE);
         jumpLeftButton.setVisibility(View.INVISIBLE);
         buttonGotoPage100.setVisibility(View.INVISIBLE);
 
-        btSelect = findViewById(R.id.bt_select);
-        tvUri = findViewById(R.id.tv_uri);
-        tvPath = findViewById(R.id.tv_path);
+        btSelect = (Button) findViewById(R.id.bt_select);
+        tvUri = (TextView) findViewById(R.id.tv_uri);
+        tvPath = (TextView) findViewById(R.id.tv_path);
+        tvLabelTabletPage = (TextView) findViewById(R.id.tvLabelTabletPage);
 
         if( !"".equals(filePathStr) ){  tvPath.setText( filePathStr );  }
 
@@ -143,16 +147,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if( tabletNum != 0 ) { tabletNumEditText.setText( Integer.toString( tabletNum ) );  }
-
-//        if (Build.VERSION.SDK_INT >= 23) {
-//            int permissionCheck = ContextCompat.checkSelfPermission( this , Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//            }
-//        }
-
-        send_data =(EditText) findViewById(R.id.editTextTestConnection);
-        view_data = (TextView) findViewById(R.id.textViewTestConnection);
 
         if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new
@@ -311,6 +305,24 @@ public class MainActivity extends AppCompatActivity {
         edit.apply();
     }
 
+    public void changeViewsWhenEbookReaderIsOpened(View v){
+        jumpRightButton.setVisibility(v.VISIBLE);
+        jumpLeftButton.setVisibility(v.VISIBLE);
+        buttonGotoPage100.setVisibility(v.VISIBLE);
+
+        openEbookReaderButton.setVisibility(v.INVISIBLE);
+        connectionReqButton.setVisibility(v.INVISIBLE );
+        serverStartButton.setVisibility(v.INVISIBLE);
+        sendMessageButton.setVisibility(v.INVISIBLE);
+        editTextTestConnection.setVisibility(v.INVISIBLE);
+        textViewTestConnection.setVisibility(v.INVISIBLE);
+        tabletNumEditText.setVisibility(v.INVISIBLE);
+        listBtDevicesView.setVisibility(v.INVISIBLE);
+        tvPath.setVisibility(v.INVISIBLE);
+        tvUri.setVisibility(v.INVISIBLE);
+        btSelect.setVisibility(v.INVISIBLE);
+        tvLabelTabletPage.setVisibility(v.INVISIBLE);
+    }
     public void changePage(){
         tabletNum = Integer.parseInt( tabletNumEditText.getText().toString() );
 
@@ -346,24 +358,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).load();
 
-        jumpRightButton.setVisibility(v.VISIBLE);
-        jumpLeftButton.setVisibility(v.VISIBLE);
-        buttonGotoPage100.setVisibility(v.VISIBLE);
-
-
-        openEbookReaderButton.setVisibility(v.INVISIBLE);
-        connectionReqButton.setVisibility(v.INVISIBLE );
-        serverStartButton.setVisibility(v.INVISIBLE);
-        sendMessageButton.setVisibility(v.INVISIBLE);
-        editTextTestConnection.setVisibility(v.INVISIBLE);
-        textViewTestConnection.setVisibility(v.INVISIBLE);
-        tabletNumEditText.setVisibility(v.INVISIBLE);
-        listBtDevicesView.setVisibility(v.INVISIBLE);
-        tvPath.setVisibility(v.INVISIBLE);
-        tvUri.setVisibility(v.INVISIBLE);
-        btSelect.setVisibility(v.INVISIBLE);
-
-
+        changeViewsWhenEbookReaderIsOpened(v);
 
         buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
             @Override

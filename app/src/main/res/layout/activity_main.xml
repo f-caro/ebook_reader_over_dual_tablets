@@ -11,22 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/linearLayoutTabletPageSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:orientation="horizontal">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="LeftPage = 0 ; RightPage = 1"></TextView>
+                    android:text="LeftPage = 0 ; RightPage = 1"
+                    android:id="@+id/tvLabelTabletPage"></TextView>
 
                 <EditText
                     android:id="@+id/tabletNumEditText"
@@ -34,19 +37,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:gravity="center_horizontal"
                     android:inputType="number"
                     android:text="0"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal" />
+                    android:textAlignment="center" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayoutSelectPdfSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
+                android:layout_below="@id/linearLayoutTabletPageSettings"
                 android:layout_gravity="center_horizontal"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/bt_select"
@@ -73,16 +77,18 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayoutActivityMain"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayoutSelectPdfSection"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/connectionReqButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:onClick="pairDevice"
                     android:text="ConnectionREq" />
 
@@ -90,21 +96,16 @@
                     android:id="@+id/serverStartButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:onClick="Start_Server"
                     android:text="Server" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/editTextTestConnection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/serverStartButton"
+                    android:layout_alignParentRight="true"
                     android:background="#147D03"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -114,72 +115,83 @@
                     android:id="@+id/textViewTestConnection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/editTextTestConnection"
+                    android:layout_alignParentRight="true"
                     android:background="#147D03"
                     android:text="Test Results Here" />
 
+                <ListView
+                    android:id="@+id/listBtDevicesView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textViewTestConnection"
+                    android:layout_centerHorizontal="true"
+                    android:divider="#000"
+                    android:dividerHeight="2dp"
+                    android:listSelector="#600" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-
-            <ListView
-                android:id="@+id/listBtDevicesView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="#000"
-                android:dividerHeight="2dp"
-                android:listSelector="#600" />
-
-            <Button
-                android:id="@+id/sendMessageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#147D03"
-                android:onClick="SendMessage"
-                android:text="TestSendMessage" />
-
-            <Button
-                android:id="@+id/openEbookReader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="openEbookReader"
-                android:text="Ready To Jump to Ebook Reader"
-                android:layout_gravity="center"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/linearLayoutEbookReader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="bottom"
                 android:layout_gravity="bottom"
+                android:gravity="bottom"
                 android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/sendMessageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/openEbookReader"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="50dp"
+                    android:background="#147D03"
+                    android:onClick="SendMessage"
+                    android:text="TestSendMessage" />
+
+                <Button
+                    android:id="@+id/openEbookReader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/jumpLeftButton"
+                    android:layout_centerInParent="true"
+                    android:onClick="openEbookReader"
+                    android:text="Ready To Jump to Ebook Reader" />
 
                 <Button
                     android:id="@+id/jumpLeftButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0"
                     android:onClick="PageJumpLeft"
                     android:text="-"
-                    android:textSize="100sp"
-                    android:alpha="0"/>
+                    android:textSize="100sp" />
 
                 <Button
                     android:id="@+id/buttonGotoPage100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Table Of Contents"
-                    android:alpha="0" />
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:alpha="0"
+                    android:text="Table Of Contents" />
 
                 <Button
                     android:id="@+id/jumpRightButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:onClick="PageJumpRight"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
                     android:alpha="0"
+                    android:onClick="PageJumpRight"
                     android:text="+"
                     android:textSize="100sp" />
-            </LinearLayout>
-        </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
 
     </com.github.barteksc.pdfviewer.PDFView>
 </androidx.constraintlayout.widget.ConstraintLayout>
