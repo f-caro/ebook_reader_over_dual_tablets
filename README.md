@@ -62,3 +62,5 @@ Tried implementing a ViewPager2 component... ---> https://github.com/foxandroid/
 But realised that it is too much for something as sincere as a settings page.
 So used RelativeLayout ---> and its basic, but good enough for now.
 Future revision ---> implement Better UI components.
+Wanted to hide ActionBar after ebook is loaded ---> https://stackoverflow.com/questions/36236181/how-to-remove-title-bar-from-the-android-activity
+getSupportActionBar().hide() does the trick.

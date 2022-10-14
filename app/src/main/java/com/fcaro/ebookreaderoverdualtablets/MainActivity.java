@@ -340,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
 //        final Context context = this;
 //        Intent intent = new Intent(context, EbookReaderActivity.class);
 //        startActivity(intent);
+        if( getSupportActionBar() != null) { getSupportActionBar().hide(); }
 
         AssetManager assetManager = getAssets();
 
