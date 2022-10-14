@@ -13,41 +13,65 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:gravity="top"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/tabletNumEditText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number"
-                android:text="0" />
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/bt_select"
-                android:text="Select PDF"/>
+                android:orientation="horizontal">
 
-            <TextView
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LeftPage = 0 ; RightPage = 1"></TextView>
+
+                <EditText
+                    android:id="@+id/tabletNumEditText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_uri"
-                android:textSize="18sp"
-                android:textAlignment="center"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal" />
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_path"
-                android:textSize="18sp"
-                android:textAlignment="center"
-                android:layout_marginTop="32dp"
-                android:gravity="center_horizontal" />
+                <Button
+                    android:id="@+id/bt_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select PDF" />
+
+                <TextView
+                    android:id="@+id/tv_uri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayoutActivityMain"
@@ -69,13 +93,7 @@
                     android:onClick="Start_Server"
                     android:text="Server" />
 
-                <Button
-                    android:id="@+id/sendMessageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#147D03"
-                    android:onClick="SendMessage"
-                    android:text="TestSendMessage" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -112,43 +130,52 @@
                 android:listSelector="#600" />
 
             <Button
+                android:id="@+id/sendMessageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#147D03"
+                android:onClick="SendMessage"
+                android:text="TestSendMessage" />
+
+            <Button
                 android:id="@+id/openEbookReader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="openEbookReader"
-                android:text="Ready To Jump to Ebook Reader" />
+                android:text="Ready To Jump to Ebook Reader"
+                android:layout_gravity="center"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/linearLayoutEbookReader"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="bottom"
+                android:layout_gravity="bottom"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/jumpLeftButton"
-                    android:layout_width="100px"
-                    android:layout_height="100px"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="17dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:onClick="PageJumpLeft"
                     android:text="-"
-                    android:textSize="100sp" />
+                    android:textSize="100sp"
+                    android:alpha="0"/>
 
                 <Button
                     android:id="@+id/buttonGotoPage100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Button to goto page 100" />
+                    android:text="Table Of Contents"
+                    android:alpha="0" />
 
                 <Button
                     android:id="@+id/jumpRightButton"
-                    android:layout_width="100px"
-                    android:layout_height="100px"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
                     android:onClick="PageJumpRight"
+                    android:alpha="0"
                     android:text="+"
                     android:textSize="100sp" />
             </LinearLayout>
