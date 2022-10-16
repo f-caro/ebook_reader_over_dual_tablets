@@ -64,3 +64,23 @@ So used RelativeLayout ---> and its basic, but good enough for now.
 Future revision ---> implement Better UI components.
 Wanted to hide ActionBar after ebook is loaded ---> https://stackoverflow.com/questions/36236181/how-to-remove-title-bar-from-the-android-activity
 getSupportActionBar().hide() does the trick.
+
+##Need TableOfContents to quickly jump to other sections in the book.
+It wasn't in the PDFreader documentation, but a method to getTableOfContents() exists and is inherited by the pdfView object written by Barteksc/AndroidPdfViewer.
+ ---> List<PdfDocument.Bookmark> pdfTableOfContents = pdfView.getTableOfContents();
+ forLoop() between each Bookmark obj,  getTitle() ,  then  getPageIdx() -->  output to a ListView
+ that is invisible when not in use, and becomes VISIBLE when TableOfContents button is pressed
+
+##What to improve --->
+Need UX improvements (eg. better TableOfContents listView interaction)
+Need better UI components (eg. StartPage wizard to help user click buttons in correct order).
+Need user friendly buttons while reading PDF (eg. Buttons are invisible, would be nice to FadeOut ).
+Need better Bluetooth connection reliability (while tethered to AndroidStudio, BT connects 8/10 times, then hard reset is needed)
+Need automatic Bluetooth connectivity ( "blue tuuf deviy connektd susseffully",  you switch it on, the tablet auto connects )
+Need Bluetooth file Transfer ( PDF that opens in one tablet, syncs with 2nd tablet )
+
+Need to open over 3-tablets, 4-tablets .... n-tablets ( That would be a challenge )
+seems 4 is the limit --> https://stackoverflow.com/questions/3943182/multiple-bluetooth-connection
+but someone managed to connect upto 7 devices simultaneously ---> http://arissa34.github.io/Android-Multi-Bluetooth-Library/
+Yip, and you can daisy chain them by configuring a client to be a server to 7 more.
+Since a String "tab1,tab2,tab3,tab4,...,tabN" is synchronised between tablets , daisy chain 1->2,  2->3, 3->4, ... (n-1)-> n)

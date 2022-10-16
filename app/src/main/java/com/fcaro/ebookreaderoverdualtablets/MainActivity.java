@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnRenderListener;
+import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,15 +82,16 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder messages;
     String filePathStr;
     String recentMsg;
+    ArrayList<HashMap<String,String> > tableOfContents;
 
     PDFView pdfView;
-    Button buttonGotoPage100, connectionReqButton, serverStartButton, sendMessageButton;
+    Button buttonTableOfContents, connectionReqButton, serverStartButton, sendMessageButton;
     Button jumpLeftButton, jumpRightButton, openEbookReaderButton ;
     ListView listViewBluetoothDevices;
     TextView btDeviceTextView;
     EditText editTextTestConnection, tabletNumEditText;
     TextView textViewTestConnection;
-    ListView listBtDevicesView;
+    ListView listBtDevicesView, listViewTableOfContents;
 
     Button btSelect;
     TextView tvUri, tvPath, tvLabelTabletPage;
@@ -118,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
 
         jumpLeftButton = (Button) findViewById(R.id.jumpLeftButton);
         jumpRightButton = (Button) findViewById(R.id.jumpRightButton);
-        buttonGotoPage100 = (Button) findViewById(R.id.buttonGotoPage100);//get id of button 1
+        buttonTableOfContents = (Button) findViewById(R.id.buttonTableOfContents);
+        listViewTableOfContents = (ListView) findViewById(R.id.listViewTableOfContents);
+
         openEbookReaderButton = (Button) findViewById(R.id.openEbookReader);
 
         editTextTestConnection = (EditText) findViewById(R.id.editTextTestConnection);
@@ -130,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
         jumpRightButton.setVisibility(View.INVISIBLE);
         jumpLeftButton.setVisibility(View.INVISIBLE);
-        buttonGotoPage100.setVisibility(View.INVISIBLE);
+        buttonTableOfContents.setVisibility(View.INVISIBLE);
+        listViewTableOfContents.setVisibility(View.INVISIBLE);
 
         btSelect = (Button) findViewById(R.id.bt_select);
         tvUri = (TextView) findViewById(R.id.tv_uri);
@@ -284,6 +289,16 @@ public class MainActivity extends AppCompatActivity {
         changePage();
     }
 
+    public void PageJumpToPage(int pageIdxStr ) {
+        if(leftTabletPage + 2 > 0) { leftTabletPage = pageIdxStr ; }
+        if(rightTabletPage + 2 > 0) { rightTabletPage = leftTabletPage + 1; }
+        String msgSend = leftTabletPage  + "," + rightTabletPage;
+        updateKeyValSettings("recentMsg", msgSend );
+        byte[] bytes = msgSend.getBytes(Charset.defaultCharset());
+        mConnectedThread.write(bytes);
+        changePage();
+    }
+
     public void updatePageNumbers(String msgStr ){
 //        String[] separated = msgStr.split(",");
 //        leftTabletPage = Integer.parseInt(separated[0]);
@@ -308,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
     public void changeViewsWhenEbookReaderIsOpened(View v){
         jumpRightButton.setVisibility(v.VISIBLE);
         jumpLeftButton.setVisibility(v.VISIBLE);
-        buttonGotoPage100.setVisibility(v.VISIBLE);
+        buttonTableOfContents.setVisibility(v.VISIBLE);
 
         openEbookReaderButton.setVisibility(v.INVISIBLE);
         connectionReqButton.setVisibility(v.INVISIBLE );
@@ -322,7 +337,9 @@ public class MainActivity extends AppCompatActivity {
         tvUri.setVisibility(v.INVISIBLE);
         btSelect.setVisibility(v.INVISIBLE);
         tvLabelTabletPage.setVisibility(v.INVISIBLE);
+        listViewTableOfContents.setVisibility(v.INVISIBLE);
     }
+
     public void changePage(){
         tabletNum = Integer.parseInt( tabletNumEditText.getText().toString() );
 
@@ -336,6 +353,36 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
     }
+
+    public void prepareTableOfContents(){
+        List<PdfDocument.Bookmark> pdfTableOfContents = pdfView.getTableOfContents();
+        //ArrayList<HashMap<String, String >>
+        tableOfContents = new ArrayList<>();
+
+        for (PdfDocument.Bookmark bkmark : pdfTableOfContents ) {
+            if(bkmark.hasChildren()){
+                for ( PdfDocument.Bookmark bkmarkChild : bkmark.getChildren() ) {
+                    HashMap<String,String> hashMapItemChild = new HashMap<>();
+                    String bkmarkTitleChild = bkmarkChild.getTitle();
+                    Long bkmarkIdxChild = bkmarkChild.getPageIdx();
+                    Log.e("MAinActivity", ":openEbookReader()::onRender():::forLoop() "+
+                            bkmarkTitleChild + " -- " + Long.toString( bkmarkIdxChild )  );
+                    hashMapItemChild.put("title", bkmarkTitleChild);
+                    hashMapItemChild.put("pageIdx", Long.toString( bkmarkIdxChild) );
+                    tableOfContents.add(hashMapItemChild);
+                }
+            }
+            String bkmarkTitle = bkmark.getTitle();
+            Long bkmarkIdx = bkmark.getPageIdx();
+            Log.e("MAinActivity", ":openEbookReader()::onRender():::forLoop() " +
+                    bkmarkTitle + " -- " + Long.toString( bkmarkIdx )  );
+            HashMap<String,String> hashMapItem = new HashMap<>();
+            hashMapItem.put("title", bkmarkTitle);
+            hashMapItem.put("pageIdx", Long.toString( bkmarkIdx) );
+            tableOfContents.add(hashMapItem);
+        }
+    }
+
     public void openEbookReader(View v){
 //        final Context context = this;
 //        Intent intent = new Intent(context, EbookReaderActivity.class);
@@ -354,19 +401,75 @@ public class MainActivity extends AppCompatActivity {
         pdfView.fromFile(pdffile).onRender(new OnRenderListener() {
             @Override
             public void onInitiallyRendered(int pages, float pageWidth, float pageHeight) {
-                Log.e("MAinActivity:openEbookReader()::onRender()", recentMsg  );
+                Log.e("MAinActivity", ":openEbookReader()::onRender():" + recentMsg  );
                 if(recentMsg.contains(",") ){   updatePageNumbers(recentMsg);   }
+                prepareTableOfContents();
+
+//                List<PdfDocument.Bookmark> pdfTableOfContents = pdfView.getTableOfContents();
+//                //ArrayList<HashMap<String, String >>
+//                        tableOfContents = new ArrayList<>();
+//
+//                for (PdfDocument.Bookmark bkmark : pdfTableOfContents ) {
+//                    if(bkmark.hasChildren()){
+//                        for ( PdfDocument.Bookmark bkmarkChild : bkmark.getChildren() ) {
+//                            HashMap<String,String> hashMapItemChild = new HashMap<>();
+//                            String bkmarkTitleChild = bkmarkChild.getTitle();
+//                            Long bkmarkIdxChild = bkmarkChild.getPageIdx();
+//                            Log.e("MAinActivity", ":openEbookReader()::onRender():::forLoop() "+
+//                                    bkmarkTitleChild + " -- " + Long.toString( bkmarkIdxChild )  );
+//                            hashMapItemChild.put("title", bkmarkTitleChild);
+//                            hashMapItemChild.put("pageIdx", Long.toString( bkmarkIdxChild) );
+//                            tableOfContents.add(hashMapItemChild);
+//                        }
+//                    }
+//                    String bkmarkTitle = bkmark.getTitle();
+//                    Long bkmarkIdx = bkmark.getPageIdx();
+//                    Log.e("MAinActivity", ":openEbookReader()::onRender():::forLoop() " +
+//                            bkmarkTitle + " -- " + Long.toString( bkmarkIdx )  );
+//                    HashMap<String,String> hashMapItem = new HashMap<>();
+//                    hashMapItem.put("title", bkmarkTitle);
+//                    hashMapItem.put("pageIdx", Long.toString( bkmarkIdx) );
+//                    tableOfContents.add(hashMapItem);
+//                }
             }
         }).load();
 
+
+
         changeViewsWhenEbookReaderIsOpened(v);
 
-        buttonGotoPage100.setOnClickListener(new View.OnClickListener() {
+        buttonTableOfContents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pdfView.jumpTo(100);
+                //pdfView.jumpTo(100);
+                listViewTableOfContents.setVisibility( View.VISIBLE );
+                String[] from={"title","pageIdx"};//string array
+                int[] to={R.id.tvTocTitle,R.id.tvTocPageIdx};//int array of views id's
+                SimpleAdapter tableOfContentsSimpleAdapter=new SimpleAdapter(
+                        getApplicationContext(),
+                        tableOfContents,
+                        R.layout.lv_table_of_contents_item,
+                        from,
+                        to);//Create object and set the parameters for simpleAdapter
+                listViewTableOfContents.setAdapter(tableOfContentsSimpleAdapter);//sets the adapter for listView
+
+                //perform listView item click event
+                listViewTableOfContents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                tableOfContents.get(i).get("pageIdx") ,Toast.LENGTH_LONG).show();
+                        //show the selected image in toast according to position
+                        String selectedPageIdx = tableOfContents.get(i).get("pageIdx");
+                        pdfView.jumpTo( Integer.parseInt(selectedPageIdx));
+                        PageJumpToPage( Integer.parseInt( selectedPageIdx )  );
+                        listViewTableOfContents.setVisibility(View.INVISIBLE);
+                    }
+                });
+
                 Toast.makeText(getApplicationContext(),
-                        buttonGotoPage100.getText() ,
+                        buttonTableOfContents.getText() ,
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -384,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
         listBtDevicesView=(ListView)findViewById(R.id.listBtDevicesView);
 
         m_bluetoothName = bluetoothAdapter.getName();
-        Log.e("MAinActivity :: pairDevice() : currentDeviceName", ""
+        Log.e("MAinActivity", " :: pairDevice() : currentDeviceName" + ""
                 + m_bluetoothName  );
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
@@ -399,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
-                Log.e("MAinActivity :: pairDevice() :", ""
+                Log.e("MAinActivity" , " :: pairDevice() :" +  ""
                         + deviceName + " --- " + deviceHardwareAddress );
 //                if( "BG2-W09".equals( deviceName )){            chosenDevice = indexBt;
 //                    Log.e("MAinActivity :: pairDevice() : Connecting to :::", ""
@@ -425,7 +528,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     BluetoothDevice device = (BluetoothDevice) devices[i];
-                    Log.e("MAinActivity :: pairDevice() :: setOnItemClickListener() : ", ""
+                    Log.e("MAinActivity", " :: pairDevice() :: setOnItemClickListener() : " +  ""
                     + device.getName() + " --- " + device.getAddress() );
                     send_data.setText( device.getName() );
                     ConnectThread connect = new ConnectThread(device, MY_APP_UUID );

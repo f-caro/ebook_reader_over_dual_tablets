@@ -172,7 +172,7 @@
                     android:textSize="100sp" />
 
                 <Button
-                    android:id="@+id/buttonGotoPage100"
+                    android:id="@+id/buttonTableOfContents"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -190,6 +190,13 @@
                     android:onClick="PageJumpRight"
                     android:text="+"
                     android:textSize="100sp" />
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/listViewTableOfContents"/>
+
             </RelativeLayout>
         </RelativeLayout>
 
