@@ -360,8 +360,19 @@ public class MainActivity extends AppCompatActivity {
         tableOfContents = new ArrayList<>();
 
         for (PdfDocument.Bookmark bkmark : pdfTableOfContents ) {
+            //first level traverses toplevel-BookMarks
+            String bkmarkTitle = bkmark.getTitle();
+            Long bkmarkIdx = bkmark.getPageIdx();
+            Log.e("MAinActivity", ":openEbookReader()::onRender():::forLoop() " +
+                    bkmarkTitle + " -- " + Long.toString( bkmarkIdx )  );
+            HashMap<String,String> hashMapItem = new HashMap<>();
+            hashMapItem.put("title", bkmarkTitle);
+            hashMapItem.put("pageIdx", Long.toString( bkmarkIdx) );
+            tableOfContents.add(hashMapItem);
+
             if(bkmark.hasChildren()){
                 for ( PdfDocument.Bookmark bkmarkChild : bkmark.getChildren() ) {
+                    //second Level, traverses 2ndlevel-Bookmarks
                     HashMap<String,String> hashMapItemChild = new HashMap<>();
                     String bkmarkTitleChild = bkmarkChild.getTitle();
                     Long bkmarkIdxChild = bkmarkChild.getPageIdx();
@@ -372,14 +383,6 @@ public class MainActivity extends AppCompatActivity {
                     tableOfContents.add(hashMapItemChild);
                 }
             }
-            String bkmarkTitle = bkmark.getTitle();
-            Long bkmarkIdx = bkmark.getPageIdx();
-            Log.e("MAinActivity", ":openEbookReader()::onRender():::forLoop() " +
-                    bkmarkTitle + " -- " + Long.toString( bkmarkIdx )  );
-            HashMap<String,String> hashMapItem = new HashMap<>();
-            hashMapItem.put("title", bkmarkTitle);
-            hashMapItem.put("pageIdx", Long.toString( bkmarkIdx) );
-            tableOfContents.add(hashMapItem);
         }
     }
 
