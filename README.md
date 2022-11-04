@@ -20,6 +20,7 @@ Bottom right :: changes pages Rightwards ( i.o.w.  flips eBook pages forward by 
 
 7.  Be prepared for bugs... e.g. The Bluetooth implemented code needs to be refactored and used as a service class.
 
+## -
 
 ## Implementing PDF reader part.
 Awesome library exists thanks to [Barteksc/AndroidPdfViewer --> https://github.com/barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
