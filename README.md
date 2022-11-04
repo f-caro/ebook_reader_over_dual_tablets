@@ -1,7 +1,7 @@
 # ebook_reader_over_dual_tablets
 Creating simple ebook reader that synchronises page turning over 2 tablets.  One acts as a leftpage, the other as a rightpage
 
-![alt text](https://github.com/f-caro/src/main/res/mipmap-xxxhdpi/ebook_reader_over_dual_tablets_screenshot.png "Ebook_reader_over_dual_tablets")
+![alt text](https://github.com/f-caro/app/src/main/res/mipmap-xxxhdpi/ebook_reader_over_dual_tablets_screenshot.png "Ebook_reader_over_dual_tablets")
 
 1. User define which tablet is LeftPage=0 and which is RightPage=1
 2. User selects which file to load (using FilePicker).  In-other-words,  user has to copy same PDF file to both tablets.
