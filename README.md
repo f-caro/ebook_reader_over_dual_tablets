@@ -10,7 +10,7 @@ Creating simple ebook reader that synchronises page turning over 2 tablets.  One
 Press button "TestSendMessage" on LeftPage Tablet ( should send a String to RightPage )
 Press button "TestSendMessage" on RightPage Tablet ( should send a String to LeftPage )
 5. If successful with TestSendMessage --->  go ahead and "Ready to jump to Ebook Reader" button.
-It should load the Ebook.  --->  thanks Barteksc/AndroidPdfViewer
+It should load the Ebook.  --->  [thanks Barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
 
 6.  The Invisible buttons:
 Bottom Left ::  changes pages leftwards  ( i.o.w.  flips eBook pages backward by one )
@@ -22,10 +22,10 @@ Bottom right :: changes pages Rightwards ( i.o.w.  flips eBook pages forward by 
 
 
 ### Implementing PDF reader part.
-    Awesome library exists thanks to Barteksc/AndroidPdfViewer --> https://github.com/barteksc/AndroidPdfViewer
+    Awesome library exists thanks to [Barteksc/AndroidPdfViewer --> https://github.com/barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
     Easy to integrate in MainActivity.java
 
-    which requires reading a file from assets ---> https://medium.com/@mislam_73732/android-reading-files-from-assets-d7200e4a0a03
+    which requires reading a file from assets ---> (https://medium.com/@mislam_73732/android-reading-files-from-assets-d7200e4a0a03)
 
 
 
@@ -42,13 +42,13 @@ Bottom right :: changes pages Rightwards ( i.o.w.  flips eBook pages forward by 
   
       then follow stackOverflow guide...
       used this guide to connect
-      https://stackoverflow.com/questions/53887322/adb-devices-no-permissions-user-in-plugdev-group-are-your-udev-rules-wrong
+      (https://stackoverflow.com/questions/53887322/adb-devices-no-permissions-user-in-plugdev-group-are-your-udev-rules-wrong)
 
 ### Bluetooth Android --->  sending msg txt between two devices:
-      https://stackoverflow.com/questions/45140098/how-to-send-receive-messages-via-bluetooth-android-studio
+      (https://stackoverflow.com/questions/45140098/how-to-send-receive-messages-via-bluetooth-android-studio)
 
      github official Android tutorial:
-          https://github.com/android/connectivity-samples/tree/master/BluetoothChat
+          (https://github.com/android/connectivity-samples/tree/master/BluetoothChat)
 
       1st -->  onCreate -->  include Bluetooth-ON  code.  chk if BT is on.
       2nd -->  create Button, that gets list of all Paired Devices.
@@ -60,8 +60,8 @@ Bottom right :: changes pages Rightwards ( i.o.w.  flips eBook pages forward by 
               // Need to random generate it in linux --- command  uuidgen
 
       nth -->  need to create Bluetooth as Service Class so that both (n-)activities can use it
-          https://proandroiddev.com/android-bluetooth-as-a-service-c39c3d732e56
-          https://stackoverflow.com/questions/33461075/implement-bluetooth-connection-into-service-or-application-class-without-losing
+          (https://proandroiddev.com/android-bluetooth-as-a-service-c39c3d732e56)
+          (https://stackoverflow.com/questions/33461075/implement-bluetooth-connection-into-service-or-application-class-without-losing)
 
 ### Need to implement FilePicker
      Using --> https://www.geeksforgeeks.org/how-to-implement-pdf-picker-in-android/
