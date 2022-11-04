@@ -1,8 +1,8 @@
 # ebook_reader_over_dual_tablets
 
-BTW [Props to GForky for implementing WIFI solution ---> https://github.com/Gforky/Wi-Fi_Direct_sync_PDF_Reader](https://github.com/Gforky/Wi-Fi_Direct_sync_PDF_Reader)
+ByTheWay ::: [Props to GForky for implementing WIFI solution ---> https://github.com/Gforky/Wi-Fi_Direct_sync_PDF_Reader](https://github.com/Gforky/Wi-Fi_Direct_sync_PDF_Reader)
 
-Creating simple ebook reader that BlueTooth synchronises page turning over 2 tablets.  One acts as a leftpage, the other as a rightpage
+My Bluetooth implementation --->  Creating simple ebook reader that synchronises page turning over 2 tablets.  One acts as a leftpage, the other as a rightpage
 
 ![alt text](https://github.com/f-caro/ebook_reader_over_dual_tablets/blob/master/app/src/main/res/mipmap-xxxhdpi/ebook_reader_over_dual_tablets_screenshot.png "Ebook_reader_over_dual_tablets")
 
