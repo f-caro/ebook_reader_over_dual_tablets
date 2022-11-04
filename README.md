@@ -2,7 +2,7 @@
 
 ByTheWay ::: [Props to GForky for implementing WIFI solution ---> https://github.com/Gforky/Wi-Fi_Direct_sync_PDF_Reader](https://github.com/Gforky/Wi-Fi_Direct_sync_PDF_Reader)
 
-**Buuuutttt here is my Bluetooth implementation**
+** _Buuuutttt_ here is my Bluetooth implementation**
 
 Creating simple ebook reader that synchronises page turning over 2 tablets.  One acts as a leftpage, the other as a rightpage
 
