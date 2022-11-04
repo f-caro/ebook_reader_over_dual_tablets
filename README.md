@@ -21,7 +21,7 @@ Bottom right :: changes pages Rightwards ( i.o.w.  flips eBook pages forward by 
 7.  Be prepared for bugs... e.g. The Bluetooth implemented code needs to be refactored and used as a service class.
 
 
-### Implementing PDF reader part.
+## Implementing PDF reader part.
 Awesome library exists thanks to [Barteksc/AndroidPdfViewer --> https://github.com/barteksc/AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
     Easy to integrate in MainActivity.java
 
@@ -29,7 +29,7 @@ which requires reading a file from assets ---> (https://medium.com/@mislam_73732
 
 
 
-### For bluetooth dev testing --- need to debug on actual device.  Using Lenovo Tab 7" for BT dev:
+## For bluetooth dev testing --- need to debug on actual device.  Using Lenovo Tab 7" for BT dev:
 the Google Docs, aint enough for Linux Mint howto --->
 
     sudo usermod -aG plugdev $LOGNAME
@@ -46,7 +46,7 @@ used this guide to connect
 
 (https://stackoverflow.com/questions/53887322/adb-devices-no-permissions-user-in-plugdev-group-are-your-udev-rules-wrong)
 
-### Bluetooth Android --->  sending msg txt between two devices:
+## Bluetooth Android --->  sending msg txt between two devices:
 (https://stackoverflow.com/questions/45140098/how-to-send-receive-messages-via-bluetooth-android-studio)
 
 github official Android tutorial:  (https://github.com/android/connectivity-samples/tree/master/BluetoothChat)
@@ -68,7 +68,7 @@ nth -->  need to create Bluetooth as Service Class so that both (n-)activities c
 (https://proandroiddev.com/android-bluetooth-as-a-service-c39c3d732e56)
 (https://stackoverflow.com/questions/33461075/implement-bluetooth-connection-into-service-or-application-class-without-losing)
 
-### Need to implement FilePicker
+## Need to implement FilePicker
 Using --> (https://www.geeksforgeeks.org/how-to-implement-pdf-picker-in-android/)
 
 Requires in build.gradle --->
@@ -80,7 +80,7 @@ Requires in build.gradle --->
 
     implementation "androidx.fragment:fragment:1.3.0"  --- not 1.5.3, due to minSDK compatibility
 
-### Need to implement Persistance of previously used Settings:
+## Need to implement Persistance of previously used Settings:
 Good summary --> (https://www.vogella.com/tutorials/AndroidFileBasedPersistence/article.html)
 
 Small settings are stored, Key/Value pairs saved and loaded by App.
@@ -89,7 +89,7 @@ Small settings are stored, Key/Value pairs saved and loaded by App.
     pdfView.onRender(new OnRenderListener()) added to jump to previous pages.
     pdfView.load() takes a full second to load PDF file, needs async processing of command to jumptoPage.
 
-### Need UI improvements, hopefully something similar to BootStrap tricks !!??
+## Need UI improvements, hopefully something similar to BootStrap tricks !!??
 
 Material design is vast and dangerous. Ionic/ReactNavtive UI's cover a lot of gruntwork when compared to Android UI.
 Tried implementing a
@@ -105,14 +105,14 @@ Wanted to hide ActionBar after ebook is loaded ---> (https://stackoverflow.com/q
 
     getSupportActionBar().hide() does the trick.
 
-### Need TableOfContents to quickly jump to other sections in the book.
+## Need TableOfContents to quickly jump to other sections in the book.
 It wasn't in the PDFreader documentation, but a method to getTableOfContents() exists and is inherited by the pdfView object written by Barteksc/AndroidPdfViewer.
 
     ---> List<PdfDocument.Bookmark> pdfTableOfContents = pdfView.getTableOfContents();
     forLoop() between each Bookmark obj,  getTitle() ,  then  getPageIdx() -->  output to a ListView
     that is invisible when not in use, and becomes VISIBLE when TableOfContents button is pressed
 
-## What to improve --->
+# What to improve --->
 * Need UX improvements (eg. better TableOfContents listView interaction)
 * Need better UI components (eg. StartPage wizard to help user click buttons in correct order).
 * Need user friendly buttons while reading PDF (eg. Buttons are invisible, would be nice to FadeOut ).
